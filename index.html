@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pokemon Bank</title>
+   <!--  bootstrap 4 para que sea responsive -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css">
+   <!--  mis estilos -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+ <!-- barra de navegacion -->
+<nav class="navbar navbar-expand-lg navbar-dark barra">
+  <a class="navbar-brand" href="#">Pokemon Bank</a>
+
+  <!-- este boton aparece en celular -->
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#miMenu">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="miMenu">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Inicio</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Acerca de</a>
+      </li>
+
+      <!-- aqui va el login como dropdown -->
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle boton-login" href="#" data-toggle="dropdown">
+          Login
+        </a>
+
+        <div class="dropdown-menu dropdown-menu-right caja-login" id="cajaLogin">
+
+          <p class="text-center mb-2"><strong>Ingrese su PIN</strong></p>
+
+          <!-- los 4 puntitos del pin -->
+          <div class="puntitos">
+            <span class="punto" id="p0"></span>
+            <span class="punto" id="p1"></span>
+            <span class="punto" id="p2"></span>
+            <span class="punto" id="p3"></span>
+          </div>
+
+          <!-- mensaje de error o exito -->
+          <div id="aviso" class="alert mt-2" style="display:none;"></div>
+
+          <!-- teclado numerico -->
+          <div class="teclado mt-2">
+            <button type="button" onclick="tecla('1')">1</button>
+            <button type="button" onclick="tecla('2')">2</button>
+            <button type="button" onclick="tecla('3')">3</button>
+            <button type="button" onclick="tecla('4')">4</button>
+            <button type="button" onclick="tecla('5')">5</button>
+            <button type="button" onclick="tecla('6')">6</button>
+            <button type="button" onclick="tecla('7')">7</button>
+            <button type="button" onclick="tecla('8')">8</button>
+            <button type="button" onclick="tecla('9')">9</button>
+            <button type="button" onclick="borrar()">Borrar</button>
+            <button type="button" onclick="tecla('0')">0</button>
+            <button type="button" onclick="validar()" class="btn-ok">OK</button>
+          </div>
+
+        </div>
+      </li>
+
+    </ul>
+  </div>
+</nav>
+
+<!-- pagina principal -->
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 text-center">
+      <h2>Bienvenido a Pokemon Bank</h2>
+      <p>Ingrese al sistema usando el boton Login</p>
+    </div>
+  </div>
+</div>
+
+<!-- librerias -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/validate.js/0.13.1/validate.min.js"></script>
+<script src="js/app.js"></script>
+
+<!-- esto evita que el dropdown se cierre al presionar los numeros -->
+<script>
+  $(document).on('click', '#cajaLogin', function(e) {
+    e.stopPropagation()
+  })
+</script>
+
+</body>
+</html>
