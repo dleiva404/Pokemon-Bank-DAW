@@ -1,0 +1,290 @@
+/* estilos del dashboard pokemon bank */
+/* use los mismos del styles.css*/
+
+body {
+    background: #f5f5f5;
+}
+
+/* barra de navegacion */
+.barra {
+    background: #cc0000;
+    border-bottom: 4px solid #222;
+}
+
+.navbar-brand {
+    color: white !important;
+    font-weight: bold;
+}
+
+.boton-login {
+    background: #222 !important;
+    border-radius: 5px !important;
+    margin-left: 5px;
+}
+
+/* barra de info usuario */
+.barra-usuario {
+    background: #222;
+    color: white;
+    padding: 10px 20px;
+    border-bottom: 3px solid #cc0000;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.barra-usuario strong {
+    color: white;
+}
+
+.pokecoin-img {
+    width: 25px;
+    height: 25px;
+    object-fit: contain;
+    margin-right: 5px;
+}
+
+.barra-usuario .saldo {
+    color: #ffcc00;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+/* contenedor principal */
+.contenedor-principal {
+    background: transparent;
+    border: none;
+    padding: 30px;
+    margin: 30px 50px;
+}
+
+/* columnas */
+.col-md-3 {
+    display: flex;
+    justify-content: center;
+}
+
+/* texto curveado debajo de la pokebola */
+.texto-curvo {
+    margin-top: 5px;
+}
+
+.texto-curvo text {
+    font-weight: bold;
+    font-size: 13px;
+    fill: #222;
+}
+
+/* pokebola card */
+.pokebola-card {
+    border: 4px solid #222;
+    border-radius: 50%;
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    isolation: isolate;
+    transform: translateZ(0);
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.pokebola-card:hover {
+    box-shadow: 0 12px 30px rgba(204, 0, 0, 0.5);
+}
+
+/* mitad roja arriba */
+.pokebola-top {
+    background: #cc0000;
+    height: 45%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.5s ease;
+    z-index: 2;
+}
+
+/* linea negra del medio */
+.pokebola-centro {
+    background: #222;
+    height: 10%;
+    width: 100%;
+    position: absolute;
+    top: 45%;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+    transition: transform 0.5s ease, opacity 0.3s ease;
+}
+
+/* circulo blanco del centro */
+.pokebola-centro::after {
+    content: '';
+    width: 35px;
+    height: 35px;
+    background: white;
+    border: 3px solid #222;
+    border-radius: 50%;
+    position: absolute;
+}
+
+/* mitad blanca abajo */
+.pokebola-bottom {
+    background: white;
+    height: 45%;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    transition: transform 0.5s ease;
+    z-index: 2;
+}
+
+/* pokemon en el centro - ahora es el boton */
+.pokemon-img {
+    width: 90px;
+    height: 90px;
+    object-fit: contain;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 4;
+    opacity: 0;
+    transition: opacity 0.4s ease 0.3s;
+    cursor: pointer;
+}
+
+.pokemon-img:hover {
+    transform: translate(-50%, -50%) scale(1.15);
+    filter: drop-shadow(0 0 8px #ffcc00);
+}
+
+/* efecto hover - abrir pokebola */
+.pokebola-card:hover .pokebola-top {
+    transform: translateY(-100%);
+}
+
+.pokebola-card:hover .pokebola-centro {
+    transform: translateY(-100%);
+    opacity: 0;
+}
+
+.pokebola-card:hover .pokebola-bottom {
+    transform: translateY(200%);
+}
+
+.pokebola-card:hover .pokemon-img {
+    opacity: 1;
+}
+/* modal pokedex */
+.pokedex-modal {
+    border: 4px solid #222;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.pokedex-header {
+    background: #cc0000;
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 4px solid #222;
+}
+
+.pokedex-titulo {
+    color: white;
+    font-weight: bold;
+    margin: 0;
+}
+
+.pokedex-luces {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.luz-grande {
+    width: 30px;
+    height: 30px;
+    background: #4fc3f7;
+    border: 3px solid #222;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.luz-pequeña {
+    width: 12px;
+    height: 12px;
+    border: 2px solid #222;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.roja { background: #ff5252; }
+.amarilla { background: #ffcc00; }
+.verde { background: #69f0ae; }
+
+.pokedex-body {
+    background: #222;
+    padding: 20px;
+}
+
+/* cards de servicios */
+.servicio-card {
+    background: white;
+    border: 3px solid #222;
+    border-radius: 10px;
+    padding: 20px 10px;
+    text-align: center;
+    transition: transform 0.2s;
+}
+
+.servicio-card:hover {
+    transform: scale(1.05);
+}
+
+.servicio-card i {
+    color: #cc0000;
+    margin-bottom: 10px;
+}
+
+.servicio-card p {
+    font-weight: bold;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    color: #222;
+}
+
+.btn-servicio {
+    background: #cc0000;
+    color: white;
+    border: none;
+    font-weight: bold;
+    width: 100%;
+}
+
+.btn-servicio:hover {
+    background: #aa0000;
+    color: white;
+}
+.servicio-img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    margin-bottom: 10px;
+}
