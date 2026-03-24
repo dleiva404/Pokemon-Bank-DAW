@@ -1,55 +1,79 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pokemon Bank</title>
     <!-- bootstrap 4 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"/>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css"
+    />
     <!-- font awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <!-- sweetalert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- mis estilos -->
     <link rel="stylesheet" href="/css/dashboard.css" />
+    <style>
+      .swal2-container {
+        z-index: 9999 !important;
+      }
+    </style>
   </head>
   <body>
-
     <!-- barra de navegacion -->
     <nav class="navbar navbar-expand-lg navbar-dark barra">
-        <a class="navbar-brand" href="#">Pokémon Bank</a>
-        <div class="ml-auto d-flex align-items-center">
-          <span class="text-white mr-3">Ash Ketchum</span>
-          <span class="text-white mr-3">Cuenta: 0987654321</span>
-          <a href="index.html" class="btn boton-login text-white">Cerrar Sesión</a>
-        </div>
+      <a class="navbar-brand" href="#">Pokémon Bank</a>
+      <div class="ml-auto d-flex align-items-center">
+        <span class="text-white mr-3">Ash Ketchum</span>
+        <span class="text-white mr-3">Cuenta: 0987654321</span>
+        <a href="index.html" class="btn boton-login text-white"
+          >Cerrar Sesión</a
+        >
+      </div>
     </nav>
 
     <!-- barra de saldo -->
     <div class="barra-usuario">
-        <img src="img/pokecoin.png" class="pokecoin-img"/>
-        <strong>Saldo disponible:</strong>
-        <span class="saldo">$500.00</span>
+      <img src="img/pokecoin.png" class="pokecoin-img" />
+      <strong>Saldo disponible:</strong>
+      <span class="saldo">$500.00</span>
     </div>
 
     <!-- contenido principal -->
     <div class="contenedor-principal">
       <div class="container mt-4">
         <div class="row justify-content-center">
-
           <!-- deposito -->
           <div class="col-md-3 mb-4">
             <div class="d-flex flex-column align-items-center">
               <div class="card pokebola-card">
-                <img src="img/gholdengo.png" class="pokemon-img"/>
+                <img src="img/gholdengo.png" class="pokemon-img" />
                 <div class="pokebola-top"></div>
                 <div class="pokebola-centro"></div>
                 <div class="pokebola-bottom"></div>
               </div>
-              <svg class="texto-curvo" width="200" height="40" viewBox="0 0 200 40">
+              <svg
+                class="texto-curvo"
+                width="200"
+                height="40"
+                viewBox="0 0 200 40"
+              >
                 <defs>
-                  <path id="curva1" d="M 10,30 Q 100,0 190,30"/>
+                  <path id="curva1" d="M 10,30 Q 100,0 190,30" />
                 </defs>
                 <text>
-                  <textPath href="#curva1" startOffset="50%" text-anchor="middle">Depósito</textPath>
+                  <textPath
+                    href="#curva1"
+                    startOffset="50%"
+                    text-anchor="middle"
+                  >
+                    Depósito
+                  </textPath>
                 </text>
               </svg>
             </div>
@@ -59,17 +83,28 @@
           <div class="col-md-3 mb-4">
             <div class="d-flex flex-column align-items-center">
               <div class="card pokebola-card">
-                <img src="img/gengar.png" class="pokemon-img"/>
+                <img src="img/gengar.png" class="pokemon-img" />
                 <div class="pokebola-top"></div>
                 <div class="pokebola-centro"></div>
                 <div class="pokebola-bottom"></div>
               </div>
-              <svg class="texto-curvo" width="200" height="40" viewBox="0 0 200 40">
+              <svg
+                class="texto-curvo"
+                width="200"
+                height="40"
+                viewBox="0 0 200 40"
+              >
                 <defs>
-                  <path id="curva2" d="M 10,30 Q 100,0 190,30"/>
+                  <path id="curva2" d="M 10,30 Q 100,0 190,30" />
                 </defs>
                 <text>
-                  <textPath href="#curva2" startOffset="50%" text-anchor="middle">Retiro</textPath>
+                  <textPath
+                    href="#curva2"
+                    startOffset="50%"
+                    text-anchor="middle"
+                  >
+                    Retiro
+                  </textPath>
                 </text>
               </svg>
             </div>
@@ -79,17 +114,28 @@
           <div class="col-md-3 mb-4">
             <div class="d-flex flex-column align-items-center">
               <div class="card pokebola-card">
-                <img src="img/magikarp-shiny.png" class="pokemon-img"/>
+                <img src="img/magikarp-shiny.png" class="pokemon-img" />
                 <div class="pokebola-top"></div>
                 <div class="pokebola-centro"></div>
                 <div class="pokebola-bottom"></div>
               </div>
-              <svg class="texto-curvo" width="200" height="40" viewBox="0 0 200 40">
+              <svg
+                class="texto-curvo"
+                width="200"
+                height="40"
+                viewBox="0 0 200 40"
+              >
                 <defs>
-                  <path id="curva3" d="M 10,30 Q 100,0 190,30"/>
+                  <path id="curva3" d="M 10,30 Q 100,0 190,30" />
                 </defs>
                 <text>
-                  <textPath href="#curva3" startOffset="50%" text-anchor="middle">Consultar Saldo</textPath>
+                  <textPath
+                    href="#curva3"
+                    startOffset="50%"
+                    text-anchor="middle"
+                  >
+                    Consultar Saldo
+                  </textPath>
                 </text>
               </svg>
             </div>
@@ -99,23 +145,37 @@
           <div class="col-md-3 mb-4">
             <div class="d-flex flex-column align-items-center">
               <div class="card pokebola-card">
-                <img src="img/snorlax.png" class="pokemon-img" data-toggle="modal" data-target="#modalServicios"/>
+                <img
+                  src="img/snorlax.png"
+                  class="pokemon-img"
+                  data-toggle="modal"
+                  data-target="#modalServicios"
+                />
                 <div class="pokebola-top"></div>
                 <div class="pokebola-centro"></div>
                 <div class="pokebola-bottom"></div>
               </div>
-
-              <svg class="texto-curvo" width="200" height="40" viewBox="0 0 200 40">
+              <svg
+                class="texto-curvo"
+                width="200"
+                height="40"
+                viewBox="0 0 200 40"
+              >
                 <defs>
-                  <path id="curva4" d="M 10,30 Q 100,0 190,30"/>
+                  <path id="curva4" d="M 10,30 Q 100,0 190,30" />
                 </defs>
                 <text>
-                  <textPath href="#curva4" startOffset="50%" text-anchor="middle">Pago de Servicios</textPath>
+                  <textPath
+                    href="#curva4"
+                    startOffset="50%"
+                    text-anchor="middle"
+                  >
+                    Pago de Servicios
+                  </textPath>
                 </text>
               </svg>
             </div>
           </div>
-
         </div>
       </div>
     </div>
@@ -132,48 +192,66 @@
               <span class="luz-pequeña verde"></span>
             </div>
             <h5 class="pokedex-titulo">Pago de Servicios</h5>
-            <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
+            <button type="button" class="close text-white" data-dismiss="modal">
+              &times;
+            </button>
           </div>
 
-          <!-- cuerpo con los servicios -->
           <div class="modal-body pokedex-body">
             <div class="row justify-content-center">
-
               <div class="col-6 mb-3">
                 <div class="servicio-card">
-                  <img src="img/Electricidad.png" class="servicio-img"/>
+                  <img src="img/Electricidad.png" class="servicio-img" />
                   <p>Energía Eléctrica</p>
-                  <a href="#" class="btn btn-servicio">Pagar</a>
+                  <a
+                    href="#"
+                    class="btn btn-servicio"
+                    onclick="pagarServicio('Energía Eléctrica')"
+                    >Pagar</a
+                  >
                 </div>
               </div>
 
               <div class="col-6 mb-3">
                 <div class="servicio-card">
-                  <img src="img/Wifi.png" class="servicio-img"/>
+                  <img src="img/Wifi.png" class="servicio-img" />
                   <p>Internet</p>
-                  <a href="#" class="btn btn-servicio">Pagar</a>
+                  <a
+                    href="#"
+                    class="btn btn-servicio"
+                    onclick="pagarServicio('Internet')"
+                    >Pagar</a
+                  >
                 </div>
               </div>
 
               <div class="col-6 mb-3">
                 <div class="servicio-card">
-                  <img src="img/Telefono.png" class="servicio-img"/>
+                  <img src="img/Telefono.png" class="servicio-img" />
                   <p>Telefonía</p>
-                  <a href="#" class="btn btn-servicio">Pagar</a>
+                  <a
+                    href="#"
+                    class="btn btn-servicio"
+                    onclick="pagarServicio('Telefonía')"
+                    >Pagar</a
+                  >
                 </div>
               </div>
 
               <div class="col-6 mb-3">
                 <div class="servicio-card">
-                  <img src="img/Agua.png" class="servicio-img"/>
+                  <img src="img/Agua.png" class="servicio-img" />
                   <p>Agua Potable</p>
-                  <a href="#" class="btn btn-servicio">Pagar</a>
+                  <a
+                    href="#"
+                    class="btn btn-servicio"
+                    onclick="pagarServicio('Agua Potable')"
+                    >Pagar</a
+                  >
                 </div>
               </div>
-
             </div>
           </div>
-
         </div>
       </div>
     </div>
@@ -181,5 +259,79 @@
     <!-- scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      var saldo = 500.0;
+
+      document.addEventListener("focusin", function (e) {
+        if (e.target.closest(".swal2-container")) {
+          e.stopImmediatePropagation();
+        }
+      });
+
+      function pagarServicio(servicio) {
+        $("#modalServicios").modal("hide");
+
+        setTimeout(function () {
+          Swal.fire({
+            title: "Pagar " + servicio,
+            text: "Ingrese el monto a pagar:",
+            input: "text",
+            inputPlaceholder: "Ej: 50.00",
+            confirmButtonText: "Pagar",
+            confirmButtonColor: "#cc0000",
+            showCancelButton: true,
+            cancelButtonText: "Cancelar",
+            inputValidator: function (monto) {
+              if (!monto || monto.trim() === "") {
+                return "Debe ingresar un monto";
+              }
+              if (isNaN(monto)) {
+                return "Las letras no son válidas, ingrese solo números";
+              }
+              if (parseFloat(monto) <= 0) {
+                return "El monto debe ser mayor a $0.00";
+              }
+            },
+          }).then(function (result) {
+            if (result.isConfirmed) {
+              var monto = parseFloat(result.value);
+              if (monto > saldo) {
+                Swal.fire({
+                  title: "Saldo insuficiente",
+                  text:
+                    "Tu saldo es $" +
+                    saldo.toFixed(2) +
+                    " y el monto es $" +
+                    monto.toFixed(2),
+                  icon: "error",
+                  confirmButtonColor: "#cc0000",
+                });
+              } else {
+                saldo = saldo - monto;
+                document.querySelector(".saldo").textContent =
+                  "$" + saldo.toFixed(2);
+                Swal.fire({
+                  title: "¡Pago Exitoso!",
+                  text:
+                    "Pagaste $" +
+                    monto.toFixed(2) +
+                    " de " +
+                    servicio +
+                    ". Saldo restante: $" +
+                    saldo.toFixed(2),
+                  icon: "success",
+                  confirmButtonColor: "#cc0000",
+                });
+              }
+            }
+          });
+        }, 500);
+      }
+    </script>
+    <!-- footer -->
+    <footer class="pie">
+      <p>Pokemon Bank &copy; 2026 - Todos los derechos reservados</p>
+    </footer>
   </body>
 </html>

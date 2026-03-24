@@ -1,8 +1,12 @@
 /* estilos del dashboard pokemon bank */
-/* use los mismos del styles.css*/
 
 body {
-    background: #f5f5f5;
+    background: url('/img/pokemon-bank.jpg') no-repeat center center;
+    background-size: 800px;
+    background-color: #ffffff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 /* barra de navegacion */
@@ -52,6 +56,7 @@ body {
 
 /* contenedor principal */
 .contenedor-principal {
+    flex: 1;
     background: transparent;
     border: none;
     padding: 30px;
@@ -190,6 +195,7 @@ body {
 .pokebola-card:hover .pokemon-img {
     opacity: 1;
 }
+
 /* modal pokedex */
 .pokedex-modal {
     border: 4px solid #222;
@@ -258,11 +264,6 @@ body {
     transform: scale(1.05);
 }
 
-.servicio-card i {
-    color: #cc0000;
-    margin-bottom: 10px;
-}
-
 .servicio-card p {
     font-weight: bold;
     font-size: 0.9rem;
@@ -282,9 +283,84 @@ body {
     background: #aa0000;
     color: white;
 }
+
 .servicio-img {
     width: 60px;
     height: 60px;
     object-fit: contain;
     margin-bottom: 10px;
+}
+
+/* footer */
+.pie {
+    background: #222;
+    color: white;
+    text-align: center;
+    padding: 15px 0;
+    border-top: 4px solid #cc0000;
+    margin-top: auto;
+}
+
+.pie p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #ccc;
+}
+
+/* responsive */
+@media (max-width: 768px) {
+    body {
+        background: none;
+        background-color: #ffffff;
+    }
+
+    .contenedor-principal {
+        margin: 15px;
+        padding: 15px;
+    }
+
+    .pokebola-card {
+        width: 150px;
+        height: 150px;
+    }
+
+    .pokemon-img {
+        width: 70px;
+        height: 70px;
+    }
+
+    .pokebola-centro::after {
+        width: 25px;
+        height: 25px;
+    }
+
+    .texto-curvo text {
+        font-size: 11px;
+    }
+
+    .barra-usuario {
+        justify-content: center;
+    }
+
+    .col-md-3 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+}
+
+@media (max-width: 480px) {
+    .pokebola-card {
+        width: 120px;
+        height: 120px;
+    }
+
+    .pokemon-img {
+        width: 55px;
+        height: 55px;
+    }
+
+    .col-md-3 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
 }
