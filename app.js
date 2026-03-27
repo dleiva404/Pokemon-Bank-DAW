@@ -1,7 +1,7 @@
 // aqui guardo lo que el usuario va presionando
 var pinUsuario = ''
 
-//reglas de validacion con validatejs 
+// reglas de validacion con validatejs
 var reglas = {
   pin: {
     presence: {
@@ -61,7 +61,10 @@ function validar() {
 
   // verifico si el pin es correcto
   if (pinUsuario == '1234') {
-    mostrarAviso('Bienvenido Gerardo Calvo!', 'success')
+    mostrarAviso('Bienvenido Ash Ketchum!', 'success')
+    setTimeout(function() {
+      window.location.href = 'dashboard.html'
+    }, 2000)
   } else {
     mostrarAviso('PIN incorrecto', 'danger')
     pinUsuario = ''
