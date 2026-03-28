@@ -3,6 +3,10 @@
     "aqui",
     "boton",
     "curveado",
+    "depositos",
+    "Grafica",
+    "grafico",
+    "informacion",
     "Ketchum",
     "navegacion",
     "podex",
@@ -11,6 +15,8 @@
     "pokedex",
     "pokemon",
     "swal",
-    "sweetalert"
+    "sweetalert",
+    "ultimos",
+    "validatejs"
   ]
 }

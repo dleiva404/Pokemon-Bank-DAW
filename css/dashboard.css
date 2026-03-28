@@ -1,7 +1,7 @@
 /* estilos del dashboard pokemon bank */
 
 body {
-    background: url('/img/pokemon-bank.jpg') no-repeat center center;
+    background: url('/img/pokemon-bank.png') no-repeat center center;
     background-size: 800px;
     background-color: #ffffff;
     min-height: 100vh;

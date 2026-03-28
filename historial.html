@@ -1,108 +1,112 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Historial</title>
 
     <!-- MIS ESTILOS  -->
-    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="/css/dashboard.css" />
 
     <!-- Bootstrap  -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
 
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
-        body {
-         background-image: none !important;
-         background-color: #f4f4f4;
-       }
-        body {
-            font-family: Arial;
-            margin: 0;
-            background-color: #f4f4f4;
-        }
+      body {
+        background-image: none !important;
+        background-color: #f4f4f4;
+      }
+      body {
+        font-family: Arial;
+        margin: 0;
+        background-color: #f4f4f4;
+      }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            margin-bottom: 40px;
-        }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        margin-bottom: 40px;
+      }
 
-        th, td {
-            padding: 10px;
-            border-bottom: 1px solid #ccc;
-            text-align: center;
-        }
+      th,
+      td {
+        padding: 10px;
+        border-bottom: 1px solid #ccc;
+        text-align: center;
+      }
 
-        th {
-            background: #2c3e50;
-            color: white;
-        }
+      th {
+        background: #2c3e50;
+        color: white;
+      }
 
-        canvas {
-            max-width: 400px;
-            margin: auto;
-            display: block;
-        }
+      canvas {
+        max-width: 400px;
+        margin: auto;
+        display: block;
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
+    <!-- NAVBAR  -->
+    <nav class="navbar navbar-expand-lg navbar-dark barra">
+      <a class="navbar-brand" href="#">Pokémon Bank</a>
 
-<!-- NAVBAR  -->
-<nav class="navbar navbar-expand-lg navbar-dark barra">
-    <a class="navbar-brand" href="#">Pokémon Bank</a>
-
-    <div class="ml-auto d-flex align-items-center">
+      <div class="ml-auto d-flex align-items-center">
         <span class="text-white mr-3">Ash Ketchum</span>
         <span class="text-white mr-3">Cuenta: 0987654321</span>
-        <a href="index.html" class="btn boton-login text-white">Cerrar Sesión</a>
-    </div>
-</nav>
+        <a href="index.html" class="btn boton-login text-white"
+          >Cerrar Sesión</a
+        >
+      </div>
+    </nav>
 
-<div class="contenedor-principal">
-    <div class="container mt-4">
-
-        <h2><center> Historial de Transacciones </center></h2>
-        <h7><center>(Ultimos 5 movimientos)</center></h7>
+    <div class="contenedor-principal">
+      <div class="container mt-4">
+        <h2><center>Historial de Transacciones</center></h2>
+        <h7><center>(Últimos 5 movimientos)</center></h7>
 
         <table id="tabla">
-            <tr>
-                <th>Fecha</th>
-                <th>Tipo</th>
-                <th>Monto ($)</th>
-            </tr>
+          <tr>
+            <th>Fecha</th>
+            <th>Tipo</th>
+            <th>Monto ($)</th>
+          </tr>
         </table>
 
         <h2>Gráfico de Movimientos</h2>
         <canvas id="grafico"></canvas>
 
-        <br>
+        <br />
         <a href="dashboard.html">⬅ Volver</a>
-
+      </div>
     </div>
-</div>
 
-<!-- SCRIPT -->
-<script>
-let grafico;
-<!--Guardar informacion en el navegador mediante localStorage---->
-function actualizarUI() {
-    const movimientos = JSON.parse(localStorage.getItem("movimientos")) || [];
+    <!-- SCRIPT -->
+    <script>
+      let grafico;
+      <!--Guardar informacion en el navegador mediante localStorage---->
+      function actualizarUI() {
+        const movimientos =
+          JSON.parse(localStorage.getItem("movimientos")) || [];
 
-    const ultimos = movimientos.slice(-5);
+        const ultimos = movimientos.slice(-5);
 
-    actualizarTabla(ultimos);
-    actualizarGrafica(movimientos);
-}
+        actualizarTabla(ultimos);
+        actualizarGrafica(movimientos);
+      }
 
-function actualizarTabla(movimientos) {
-    const tabla = document.getElementById("tabla");
+      function actualizarTabla(movimientos) {
+        const tabla = document.getElementById("tabla");
 
-    tabla.innerHTML = `
+        tabla.innerHTML = `
         <tr>
             <th>Fecha</th>
             <th>Tipo</th>
@@ -110,57 +114,58 @@ function actualizarTabla(movimientos) {
         </tr>
     `;
 
-    movimientos.forEach(mov => {
-        tabla.innerHTML += `
+        movimientos.forEach((mov) => {
+          tabla.innerHTML += `
             <tr>
                 <td>${mov.fecha}</td>
                 <td>${mov.tipo}</td>
                 <td>${mov.monto}</td>
             </tr>
         `;
-    });
-}
+        });
+      }
 
-function actualizarGrafica(movimientos) {
-    let depositos = 0;
-    let retiros = 0;
-    let servicios = 0;
+      function actualizarGrafica(movimientos) {
+        let depositos = 0;
+        let retiros = 0;
+        let servicios = 0;
 
-    movimientos.forEach(m => {
-        if (m.tipo === "Depósito") {
+        movimientos.forEach((m) => {
+          if (m.tipo === "Depósito") {
             depositos += Number(m.monto);
-        } else if (m.tipo === "Retiro") {
+          } else if (m.tipo === "Retiro") {
             retiros += Number(m.monto);
-        } else {
+          } else {
             servicios += Number(m.monto);
+          }
+        });
+
+        const ctx = document.getElementById("grafico").getContext("2d");
+
+        if (grafico) {
+          grafico.destroy();
         }
-    });
 
-    const ctx = document.getElementById('grafico').getContext('2d');
-
-    if (grafico) {
-        grafico.destroy();
-    }
-
-    grafico = new Chart(ctx, {
-        type: 'pie',
-        data: {
-            labels: ['Depósitos', 'Retiros', 'Servicios'],
-            datasets: [{
+        grafico = new Chart(ctx, {
+          type: "pie",
+          data: {
+            labels: ["Depósitos", "Retiros", "Servicios"],
+            datasets: [
+              {
                 data: [depositos, retiros, servicios],
-                backgroundColor: ['green','red','blue']
-            }]
-        }
-    });
-}
+                backgroundColor: ["green", "red", "blue"],
+              },
+            ],
+          },
+        });
+      }
 
-window.onload = actualizarUI;
-</script>
+      window.onload = actualizarUI;
+    </script>
 
-<!-- FOOTER -->
-<footer class="pie">
-    <p>Pokemon Bank © 2026 - Todos los derechos reservados</p>
-</footer>
-
-</body>
+    <!-- FOOTER -->
+    <footer class="pie">
+      <p>Pokemon Bank © 2026 - Todos los derechos reservados</p>
+    </footer>
+  </body>
 </html>

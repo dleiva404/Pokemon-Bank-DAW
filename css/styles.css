@@ -2,7 +2,7 @@
 /* use rojo negro y blanco como la pokebola */
 
 body {
-    background: url('/img/pokemon-bank.jpg') no-repeat center center;
+    background: url('/img/pokemon-bank.png') no-repeat center center;
     background-size: 800px;
     background-color: #ffffff;
     min-height: 100vh;

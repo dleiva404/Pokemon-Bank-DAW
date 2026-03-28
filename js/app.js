@@ -1,22 +1,22 @@
 // aqui guardo lo que el usuario va presionando
 var pinUsuario = ''
 
-// reglas de validacion con validatejs
+// reglas de validación con validatejs
 var reglas = {
   pin: {
     presence: {
       allowEmpty: false,
       message: 'Debe ingresar un PIN'
     },
-    // tiene que ser exactamente 4 numeros
+    // tiene que ser exactamente 4 números
     length: {
       is: 4,
-      message: 'El PIN debe ser de 4 digitos'
+      message: 'El PIN debe ser de 4 dígitos'
     },
-    // no acepta letras ni simbolos
+    // no acepta letras ni símbolos
     format: {
       pattern: /^[0-9]{4}$/,
-      message: 'Solo se aceptan numeros'
+      message: 'Solo se aceptan números'
     }
   }
 }
@@ -34,7 +34,7 @@ function borrar() {
   pintarPuntos()
 }
 
-// pinta los puntitos segun cuantos numeros llevo
+// pinta los puntitos según cuantos números llevo
 function pintarPuntos() {
   for (var i = 0; i < 4; i++) {
     var punto = document.getElementById('p' + i)
@@ -61,7 +61,10 @@ function validar() {
 
   // verifico si el pin es correcto
   if (pinUsuario == '1234') {
-    mostrarAviso('Bienvenido Gerardo Calvo!', 'success')
+    mostrarAviso('Bienvenido Ash Ketchum!', 'success')
+    setTimeout(function() {
+      window.location.href = 'dashboard.html'
+    }, 2000)
   } else {
     mostrarAviso('PIN incorrecto', 'danger')
     pinUsuario = ''
@@ -69,7 +72,7 @@ function validar() {
   }
 }
 
-// muestra el mensaje de error o exito
+// muestra el mensaje de error o éxito
 function mostrarAviso(texto, tipo) {
   var aviso = document.getElementById('aviso')
   aviso.style.display = 'block'
