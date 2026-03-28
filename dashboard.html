@@ -31,6 +31,9 @@
       <div class="ml-auto d-flex align-items-center">
         <span class="text-white mr-3">Ash Ketchum</span>
         <span class="text-white mr-3">Cuenta: 0987654321</span>
+        <a href="historial.html" class="btn boton-login text-white"
+          >Mis Movimientos 🔂</a
+        >
         <a href="index.html" class="btn boton-login text-white"
           >Cerrar Sesión</a
         >
@@ -308,22 +311,34 @@
                   confirmButtonColor: "#cc0000",
                 });
               } else {
-                saldo = saldo - monto;
-                document.querySelector(".saldo").textContent =
-                  "$" + saldo.toFixed(2);
-                Swal.fire({
-                  title: "¡Pago Exitoso!",
-                  text:
-                    "Pagaste $" +
-                    monto.toFixed(2) +
-                    " de " +
-                    servicio +
-                    ". Saldo restante: $" +
-                    saldo.toFixed(2),
-                  icon: "success",
-                  confirmButtonColor: "#cc0000",
-                });
-              }
+    saldo = saldo - monto;
+    document.querySelector(".saldo").textContent =
+        "$" + saldo.toFixed(2);
+
+    // 🔥 GUARDAR MOVIMIENTO
+    let movimientos = JSON.parse(localStorage.getItem("movimientos")) || [];
+
+    movimientos.push({
+        fecha: new Date().toLocaleDateString(),
+        tipo: "Pago de " + servicio,
+        monto: monto
+    });
+
+    localStorage.setItem("movimientos", JSON.stringify(movimientos));
+
+    Swal.fire({
+        title: "¡Pago Exitoso!",
+        text:
+            "Pagaste $" +
+            monto.toFixed(2) +
+            " de " +
+            servicio +
+            ". Saldo restante: $" +
+            saldo.toFixed(2),
+        icon: "success",
+        confirmButtonColor: "#cc0000",
+    });
+}
             }
           });
         }, 500);
