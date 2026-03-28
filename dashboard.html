@@ -31,6 +31,9 @@
       <div class="ml-auto d-flex align-items-center">
         <span class="text-white mr-3">Ash Ketchum</span>
         <span class="text-white mr-3">Cuenta: 0987654321</span>
+        <a href="historial.html" class="btn boton-login text-white mr-2"
+          >Mis Movimientos</a
+        >
         <a href="index.html" class="btn boton-login text-white"
           >Cerrar Sesión</a
         >
@@ -114,7 +117,11 @@
           <div class="col-md-3 mb-4">
             <div class="d-flex flex-column align-items-center">
               <div class="card pokebola-card">
-                <img src="img/magikarp-shiny.png" class="pokemon-img" />
+                <img
+                  src="img/magikarp-shiny.png"
+                  class="pokemon-img"
+                  onclick="consultarSaldo()"
+                />
                 <div class="pokebola-top"></div>
                 <div class="pokebola-centro"></div>
                 <div class="pokebola-bottom"></div>
@@ -256,6 +263,11 @@
       </div>
     </div>
 
+    <!-- footer -->
+    <footer class="pie">
+      <p>Pokemon Bank &copy; 2026 - Todos los derechos reservados</p>
+    </footer>
+
     <!-- scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js"></script>
@@ -268,6 +280,22 @@
           e.stopImmediatePropagation();
         }
       });
+
+      function consultarSaldo() {
+        Swal.fire({
+          title: "Consultar Saldo",
+          html:
+            "<p>Titular: <strong>Ash Ketchum</strong></p>" +
+            "<p>Cuenta: <strong>0987654321</strong></p>" +
+            "<hr>" +
+            "<h4>Saldo disponible: <span style='color:#cc0000;font-weight:bold;'>$" +
+            saldo.toFixed(2) +
+            "</span></h4>",
+          icon: "info",
+          confirmButtonText: "Cerrar",
+          confirmButtonColor: "#cc0000",
+        });
+      }
 
       function pagarServicio(servicio) {
         $("#modalServicios").modal("hide");
@@ -311,6 +339,20 @@
                 saldo = saldo - monto;
                 document.querySelector(".saldo").textContent =
                   "$" + saldo.toFixed(2);
+
+                // guardar movimiento en localStorage
+                let movimientos =
+                  JSON.parse(localStorage.getItem("movimientos")) || [];
+                movimientos.push({
+                  fecha: new Date().toLocaleDateString(),
+                  tipo: "Pago de " + servicio,
+                  monto: monto,
+                });
+                localStorage.setItem(
+                  "movimientos",
+                  JSON.stringify(movimientos),
+                );
+
                 Swal.fire({
                   title: "¡Pago Exitoso!",
                   text:
@@ -329,9 +371,5 @@
         }, 500);
       }
     </script>
-    <!-- footer -->
-    <footer class="pie">
-      <p>Pokemon Bank &copy; 2026 - Todos los derechos reservados</p>
-    </footer>
   </body>
 </html>
