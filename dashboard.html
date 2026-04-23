@@ -16,16 +16,15 @@
     />
     <!-- sweetalert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- mis estilos -->
+    <!-- jspdf para comprobantes -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- validatejs para validaciones -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/validate.js/0.13.1/validate.min.js"></script>
+    <!-- estilos propios -->
     <link rel="stylesheet" href="/css/dashboard.css" />
-    <style>
-      .swal2-container {
-        z-index: 9999 !important;
-      }
-    </style>
   </head>
   <body>
-    <!-- barra de navegacion -->
+    <!-- barra de navegacion con nombre, cuenta y botones -->
     <nav class="navbar navbar-expand-lg navbar-dark barra">
       <a class="navbar-brand" href="#">Pokémon Bank</a>
       <div class="ml-auto d-flex align-items-center">
@@ -40,35 +39,38 @@
       </div>
     </nav>
 
-    <!-- barra de saldo -->
+    <!-- barra negra con saldo del usuario -->
     <div class="barra-usuario">
       <img src="img/pokecoin.png" class="pokecoin-img" />
       <strong>Saldo disponible:</strong>
       <span class="saldo">$500.00</span>
     </div>
 
-    <!-- contenido principal -->
+    <!-- contenido principal con las 4 pokebolas -->
     <div class="contenedor-principal">
       <div class="container mt-4">
         <div class="row justify-content-center">
-          <!-- deposito -->
+          <!-- pokebola deposito - llama a depositar() -->
           <div class="col-md-3 mb-4">
             <div class="d-flex flex-column align-items-center">
               <div class="card pokebola-card">
-                <img src="img/gholdengo.png" class="pokemon-img" />
+                <img
+                  src="img/gholdengo.png"
+                  class="pokemon-img"
+                  onclick="depositar()"
+                />
                 <div class="pokebola-top"></div>
                 <div class="pokebola-centro"></div>
                 <div class="pokebola-bottom"></div>
               </div>
+              <!-- texto curvo con SVG -->
               <svg
                 class="texto-curvo"
                 width="200"
                 height="40"
                 viewBox="0 0 200 40"
               >
-                <defs>
-                  <path id="curva1" d="M 10,30 Q 100,0 190,30" />
-                </defs>
+                <defs><path id="curva1" d="M 10,30 Q 100,0 190,30" /></defs>
                 <text>
                   <textPath
                     href="#curva1"
@@ -82,11 +84,15 @@
             </div>
           </div>
 
-          <!-- retiro -->
+          <!-- pokebola retiro - llama a retirar() -->
           <div class="col-md-3 mb-4">
             <div class="d-flex flex-column align-items-center">
               <div class="card pokebola-card">
-                <img src="img/gengar.png" class="pokemon-img" />
+                <img
+                  src="img/gengar.png"
+                  class="pokemon-img"
+                  onclick="retirar()"
+                />
                 <div class="pokebola-top"></div>
                 <div class="pokebola-centro"></div>
                 <div class="pokebola-bottom"></div>
@@ -97,9 +103,7 @@
                 height="40"
                 viewBox="0 0 200 40"
               >
-                <defs>
-                  <path id="curva2" d="M 10,30 Q 100,0 190,30" />
-                </defs>
+                <defs><path id="curva2" d="M 10,30 Q 100,0 190,30" /></defs>
                 <text>
                   <textPath
                     href="#curva2"
@@ -113,7 +117,7 @@
             </div>
           </div>
 
-          <!-- consultar saldo -->
+          <!-- pokebola consultar saldo - llama a consultarSaldo() -->
           <div class="col-md-3 mb-4">
             <div class="d-flex flex-column align-items-center">
               <div class="card pokebola-card">
@@ -132,9 +136,7 @@
                 height="40"
                 viewBox="0 0 200 40"
               >
-                <defs>
-                  <path id="curva3" d="M 10,30 Q 100,0 190,30" />
-                </defs>
+                <defs><path id="curva3" d="M 10,30 Q 100,0 190,30" /></defs>
                 <text>
                   <textPath
                     href="#curva3"
@@ -148,7 +150,7 @@
             </div>
           </div>
 
-          <!-- pago de servicios -->
+          <!-- pokebola pago de servicios - abre modal -->
           <div class="col-md-3 mb-4">
             <div class="d-flex flex-column align-items-center">
               <div class="card pokebola-card">
@@ -168,9 +170,7 @@
                 height="40"
                 viewBox="0 0 200 40"
               >
-                <defs>
-                  <path id="curva4" d="M 10,30 Q 100,0 190,30" />
-                </defs>
+                <defs><path id="curva4" d="M 10,30 Q 100,0 190,30" /></defs>
                 <text>
                   <textPath
                     href="#curva4"
@@ -187,10 +187,16 @@
       </div>
     </div>
 
-    <!-- modal pokedex servicios -->
-    <div class="modal fade" id="modalServicios" tabindex="-1">
+    <!-- modal estilo pokedex para pago de servicios -->
+    <div
+      class="modal fade"
+      id="modalServicios"
+      tabindex="-1"
+      data-backdrop="static"
+    >
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content pokedex-modal">
+          <!-- encabezado rojo con luces decorativas -->
           <div class="pokedex-header">
             <div class="pokedex-luces">
               <span class="luz-grande"></span>
@@ -198,63 +204,102 @@
               <span class="luz-pequeña amarilla"></span>
               <span class="luz-pequeña verde"></span>
             </div>
-            <h5 class="pokedex-titulo">Pago de Servicios</h5>
+            <h5 class="pokedex-titulo" id="tituloServicio">
+              Pago de Servicios
+            </h5>
             <button type="button" class="close text-white" data-dismiss="modal">
               &times;
             </button>
           </div>
 
           <div class="modal-body pokedex-body">
-            <div class="row justify-content-center">
-              <div class="col-6 mb-3">
-                <div class="servicio-card">
-                  <img src="img/Electricidad.png" class="servicio-img" />
-                  <p>Energía Eléctrica</p>
-                  <a
-                    href="#"
-                    class="btn btn-servicio"
-                    onclick="pagarServicio('Energía Eléctrica')"
-                    >Pagar</a
-                  >
+            <!-- pantalla 1: seleccion del servicio -->
+            <div id="pantallaServicios">
+              <div class="row justify-content-center">
+                <div class="col-6 mb-3">
+                  <div class="servicio-card">
+                    <img src="img/Electricidad.png" class="servicio-img" />
+                    <p>Energía Eléctrica</p>
+                    <button
+                      class="btn btn-servicio"
+                      onclick="seleccionarServicio('Energía Eléctrica')"
+                    >
+                      Pagar
+                    </button>
+                  </div>
+                </div>
+                <div class="col-6 mb-3">
+                  <div class="servicio-card">
+                    <img src="img/Wifi.png" class="servicio-img" />
+                    <p>Internet</p>
+                    <button
+                      class="btn btn-servicio"
+                      onclick="seleccionarServicio('Internet')"
+                    >
+                      Pagar
+                    </button>
+                  </div>
+                </div>
+                <div class="col-6 mb-3">
+                  <div class="servicio-card">
+                    <img src="img/Telefono.png" class="servicio-img" />
+                    <p>Telefonía</p>
+                    <button
+                      class="btn btn-servicio"
+                      onclick="seleccionarServicio('Telefonía')"
+                    >
+                      Pagar
+                    </button>
+                  </div>
+                </div>
+                <div class="col-6 mb-3">
+                  <div class="servicio-card">
+                    <img src="img/Agua.png" class="servicio-img" />
+                    <p>Agua Potable</p>
+                    <button
+                      class="btn btn-servicio"
+                      onclick="seleccionarServicio('Agua Potable')"
+                    >
+                      Pagar
+                    </button>
+                  </div>
                 </div>
               </div>
+            </div>
 
-              <div class="col-6 mb-3">
-                <div class="servicio-card">
-                  <img src="img/Wifi.png" class="servicio-img" />
-                  <p>Internet</p>
-                  <a
-                    href="#"
-                    class="btn btn-servicio"
-                    onclick="pagarServicio('Internet')"
-                    >Pagar</a
-                  >
+            <!-- pantalla 2: ingresar monto del servicio -->
+            <div id="pantallaMontoServicio" style="display: none">
+              <div class="text-center pantalla-monto">
+                <img
+                  id="iconoServicioSeleccionado"
+                  src=""
+                  class="icono-servicio-seleccionado"
+                />
+                <h5 id="nombreServicioSeleccionado"></h5>
+                <div class="form-group text-left">
+                  <label class="text-white">Monto a pagar:</label>
+                  <input
+                    type="number"
+                    id="montoServicio"
+                    placeholder="Ej: 50.00"
+                    min="0.01"
+                    max="10000"
+                    step="0.01"
+                  />
+                  <!-- mensaje de error de validacion -->
+                  <small
+                    id="errorServicio"
+                    class="text-danger"
+                    style="display: none"
+                  ></small>
                 </div>
-              </div>
-
-              <div class="col-6 mb-3">
-                <div class="servicio-card">
-                  <img src="img/Telefono.png" class="servicio-img" />
-                  <p>Telefonía</p>
-                  <a
-                    href="#"
-                    class="btn btn-servicio"
-                    onclick="pagarServicio('Telefonía')"
-                    >Pagar</a
-                  >
-                </div>
-              </div>
-
-              <div class="col-6 mb-3">
-                <div class="servicio-card">
-                  <img src="img/Agua.png" class="servicio-img" />
-                  <p>Agua Potable</p>
-                  <a
-                    href="#"
-                    class="btn btn-servicio"
-                    onclick="pagarServicio('Agua Potable')"
-                    >Pagar</a
-                  >
+                <div class="d-flex justify-content-between mt-3">
+                  <button class="btn-volver" onclick="volverServicios()">
+                    Cancelar
+                  </button>
+                  <button class="btn-confirmar" onclick="confirmarPago()">
+                    Confirmar Pago
+                  </button>
                 </div>
               </div>
             </div>
@@ -268,22 +313,228 @@
       <p>Pokemon Bank &copy; 2026 - Todos los derechos reservados</p>
     </footer>
 
-    <!-- scripts -->
+    <!-- jquery y bootstrap js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js"></script>
 
     <script>
+      // saldo inicial, se sobreescribe con localStorage si existe
       var saldo = 500.0;
+      var saldoGuardado = localStorage.getItem("saldo");
+      if (saldoGuardado) {
+        saldo = parseFloat(saldoGuardado);
+        document.addEventListener("DOMContentLoaded", function () {
+          document.querySelector(".saldo").textContent = "$" + saldo.toFixed(2);
+        });
+      }
 
+      // reglas de validacion con validatejs
+      var reglasTransaccion = {
+        monto: {
+          presence: { allowEmpty: false, message: "^Debe ingresar un monto" },
+          numericality: {
+            onlyInteger: false,
+            greaterThan: 0,
+            lessThanOrEqualTo: 10000,
+            notGreaterThan: "^El monto debe ser mayor a $0.00",
+            notLessThanOrEqualTo: "^El monto máximo es $10,000.00",
+          },
+        },
+      };
+
+      // valida el monto usando validatejs
+      function validarMonto(monto) {
+        var errores = validate({ monto: monto }, reglasTransaccion);
+        if (errores) return errores.monto[0];
+        if (isNaN(monto))
+          return "Las letras no son válidas, ingrese solo números";
+        return null;
+      }
+
+      // fix para que sweetalert funcione con bootstrap
       document.addEventListener("focusin", function (e) {
         if (e.target.closest(".swal2-container")) {
           e.stopImmediatePropagation();
         }
       });
 
+      // reinicia el modal al cerrarse
+      $("#modalServicios").on("hidden.bs.modal", function () {
+        volverServicios();
+        document.getElementById("pantallaMontoServicio").innerHTML =
+          "<div class='text-center pantalla-monto'>" +
+          "<img id='iconoServicioSeleccionado' src='' class='icono-servicio-seleccionado'/>" +
+          "<h5 id='nombreServicioSeleccionado'></h5>" +
+          "<div class='form-group text-left'>" +
+          "<label class='text-white'>Monto a pagar:</label>" +
+          "<input type='number' id='montoServicio' placeholder='Ej: 50.00' min='0.01' max='10000' step='0.01'/>" +
+          "<small id='errorServicio' class='text-danger' style='display:none'></small>" +
+          "</div>" +
+          "<div class='d-flex justify-content-between mt-3'>" +
+          "<button class='btn-volver' onclick='volverServicios()'>Cancelar</button>" +
+          "<button class='btn-confirmar' onclick='confirmarPago()'>Confirmar Pago</button>" +
+          "</div></div>";
+      });
+
+      // genera comprobante PDF con jspdf
+      function generarComprobante(tipo, monto) {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        // encabezado rojo
+        doc.setFillColor(204, 0, 0);
+        doc.rect(0, 0, 210, 30, "F");
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(20);
+        doc.text("Pokémon Bank", 105, 15, { align: "center" });
+        doc.setFontSize(12);
+        doc.text("Comprobante de Transacción", 105, 25, { align: "center" });
+        // datos de la transaccion
+        doc.setTextColor(0, 0, 0);
+        doc.setFontSize(12);
+        doc.text("Titular: Ash Ketchum", 20, 50);
+        doc.text("Cuenta: 0987654321", 20, 60);
+        doc.text("Fecha: " + new Date().toLocaleDateString(), 20, 70);
+        doc.text("Tipo: " + tipo, 20, 80);
+        doc.text("Monto: $" + monto.toFixed(2), 20, 90);
+        doc.text("Saldo actual: $" + saldo.toFixed(2), 20, 100);
+        // linea separadora y pie
+        doc.setDrawColor(204, 0, 0);
+        doc.line(20, 110, 190, 110);
+        doc.setFontSize(10);
+        doc.setTextColor(100, 100, 100);
+        doc.text(
+          "Pokémon Bank © 2026 - Todos los derechos reservados",
+          105,
+          120,
+          { align: "center" },
+        );
+        doc.save("comprobante-" + tipo + ".pdf");
+      }
+
+      // deposito de dinero
+      function depositar() {
+        Swal.fire({
+          title: "Depósito",
+          text: "Ingrese el monto a depositar:",
+          imageUrl: "img/gholdengo.png",
+          imageWidth: 100,
+          imageHeight: 100,
+          input: "text",
+          inputPlaceholder: "Ej: 50.00",
+          confirmButtonText: "Depositar",
+          confirmButtonColor: "#28a745",
+          showCancelButton: true,
+          cancelButtonText: "Cancelar",
+          cancelButtonColor: "#cc0000",
+          inputValidator: function (monto) {
+            return validarMonto(monto);
+          },
+        }).then(function (result) {
+          if (result.isConfirmed) {
+            var monto = parseFloat(result.value);
+            // actualizar saldo y guardar en localStorage
+            saldo = saldo + monto;
+            localStorage.setItem("saldo", saldo.toFixed(2));
+            document.querySelector(".saldo").textContent =
+              "$" + saldo.toFixed(2);
+            // guardar movimiento
+            let movimientos =
+              JSON.parse(localStorage.getItem("movimientos")) || [];
+            movimientos.push({
+              fecha: new Date().toLocaleDateString(),
+              tipo: "Depósito",
+              monto: monto,
+            });
+            localStorage.setItem("movimientos", JSON.stringify(movimientos));
+            generarComprobante("Depósito", monto);
+            Swal.fire({
+              title: "¡Depósito Exitoso!",
+              text:
+                "Depositaste $" +
+                monto.toFixed(2) +
+                ". Nuevo saldo: $" +
+                saldo.toFixed(2),
+              icon: "success",
+              confirmButtonText: "Cerrar",
+              confirmButtonColor: "#cc0000",
+            });
+          }
+        });
+      }
+
+      // retiro de dinero
+      function retirar() {
+        Swal.fire({
+          title: "Retiro",
+          text: "Ingrese el monto a retirar:",
+          imageUrl: "img/gengar.png",
+          imageWidth: 100,
+          imageHeight: 100,
+          input: "text",
+          inputPlaceholder: "Ej: 50.00",
+          confirmButtonText: "Retirar",
+          confirmButtonColor: "#28a745",
+          showCancelButton: true,
+          cancelButtonText: "Cancelar",
+          cancelButtonColor: "#cc0000",
+          inputValidator: function (monto) {
+            return validarMonto(monto);
+          },
+        }).then(function (result) {
+          if (result.isConfirmed) {
+            var monto = parseFloat(result.value);
+            // verificar saldo suficiente
+            if (monto > saldo) {
+              Swal.fire({
+                title: "Saldo insuficiente",
+                text:
+                  "Tu saldo es $" +
+                  saldo.toFixed(2) +
+                  " y el monto es $" +
+                  monto.toFixed(2),
+                icon: "error",
+                confirmButtonText: "Cerrar",
+                confirmButtonColor: "#cc0000",
+              });
+            } else {
+              // actualizar saldo y guardar en localStorage
+              saldo = saldo - monto;
+              localStorage.setItem("saldo", saldo.toFixed(2));
+              document.querySelector(".saldo").textContent =
+                "$" + saldo.toFixed(2);
+              // guardar movimiento
+              let movimientos =
+                JSON.parse(localStorage.getItem("movimientos")) || [];
+              movimientos.push({
+                fecha: new Date().toLocaleDateString(),
+                tipo: "Retiro",
+                monto: monto,
+              });
+              localStorage.setItem("movimientos", JSON.stringify(movimientos));
+              generarComprobante("Retiro", monto);
+              Swal.fire({
+                title: "¡Retiro Exitoso!",
+                text:
+                  "Retiraste $" +
+                  monto.toFixed(2) +
+                  ". Saldo restante: $" +
+                  saldo.toFixed(2),
+                icon: "success",
+                confirmButtonText: "Cerrar",
+                confirmButtonColor: "#cc0000",
+              });
+            }
+          }
+        });
+      }
+
+      // muestra el saldo actual del usuario
       function consultarSaldo() {
         Swal.fire({
           title: "Consultar Saldo",
+          imageUrl: "img/magikarp-shiny.png",
+          imageWidth: 100,
+          imageHeight: 100,
           html:
             "<p>Titular: <strong>Ash Ketchum</strong></p>" +
             "<p>Cuenta: <strong>0987654321</strong></p>" +
@@ -297,78 +548,93 @@
         });
       }
 
-      function pagarServicio(servicio) {
-        $("#modalServicios").modal("hide");
+      // servicio seleccionado actualmente
+      var servicioSeleccionado = "";
 
-        setTimeout(function () {
-          Swal.fire({
-            title: "Pagar " + servicio,
-            text: "Ingrese el monto a pagar:",
-            input: "text",
-            inputPlaceholder: "Ej: 50.00",
-            confirmButtonText: "Pagar",
-            confirmButtonColor: "#cc0000",
-            showCancelButton: true,
-            cancelButtonText: "Cancelar",
-            inputValidator: function (monto) {
-              if (!monto || monto.trim() === "") {
-                return "Debe ingresar un monto";
-              }
-              if (isNaN(monto)) {
-                return "Las letras no son válidas, ingrese solo números";
-              }
-              if (parseFloat(monto) <= 0) {
-                return "El monto debe ser mayor a $0.00";
-              }
-            },
-          }).then(function (result) {
-            if (result.isConfirmed) {
-              var monto = parseFloat(result.value);
-              if (monto > saldo) {
-                Swal.fire({
-                  title: "Saldo insuficiente",
-                  text:
-                    "Tu saldo es $" +
-                    saldo.toFixed(2) +
-                    " y el monto es $" +
-                    monto.toFixed(2),
-                  icon: "error",
-                  confirmButtonColor: "#cc0000",
-                });
-              } else {
-                saldo = saldo - monto;
-                document.querySelector(".saldo").textContent =
-                  "$" + saldo.toFixed(2);
+      // muestra la pantalla de monto para el servicio elegido
+      function seleccionarServicio(servicio) {
+        var iconos = {
+          "Energía Eléctrica": "img/Electricidad.png",
+          Internet: "img/Wifi.png",
+          Telefonía: "img/Telefono.png",
+          "Agua Potable": "img/Agua.png",
+        };
+        servicioSeleccionado = servicio;
+        document.getElementById("iconoServicioSeleccionado").src =
+          iconos[servicio];
+        document.getElementById("nombreServicioSeleccionado").textContent =
+          "Pagando: " + servicio;
+        document.getElementById("montoServicio").value = "";
+        document.getElementById("errorServicio").style.display = "none";
+        document.getElementById("pantallaServicios").style.display = "none";
+        document.getElementById("pantallaMontoServicio").style.display =
+          "block";
+        document.getElementById("tituloServicio").textContent =
+          "Pago de " + servicio;
+      }
 
-                // guardar movimiento en localStorage
-                let movimientos =
-                  JSON.parse(localStorage.getItem("movimientos")) || [];
-                movimientos.push({
-                  fecha: new Date().toLocaleDateString(),
-                  tipo: "Pago de " + servicio,
-                  monto: monto,
-                });
-                localStorage.setItem(
-                  "movimientos",
-                  JSON.stringify(movimientos),
-                );
+      // regresa a la pantalla de seleccion de servicios
+      function volverServicios() {
+        document.getElementById("pantallaServicios").style.display = "block";
+        document.getElementById("pantallaMontoServicio").style.display = "none";
+        document.getElementById("tituloServicio").textContent =
+          "Pago de Servicios";
+      }
 
-                Swal.fire({
-                  title: "¡Pago Exitoso!",
-                  text:
-                    "Pagaste $" +
-                    monto.toFixed(2) +
-                    " de " +
-                    servicio +
-                    ". Saldo restante: $" +
-                    saldo.toFixed(2),
-                  icon: "success",
-                  confirmButtonColor: "#cc0000",
-                });
-              }
-            }
-          });
-        }, 500);
+      // valida y procesa el pago del servicio
+      function confirmarPago() {
+        var montoInput = document.getElementById("montoServicio").value;
+        var errorEl = document.getElementById("errorServicio");
+
+        // validar con validatejs
+        var errorValidacion = validarMonto(montoInput);
+        if (errorValidacion) {
+          errorEl.textContent = errorValidacion;
+          errorEl.style.display = "block";
+          return;
+        }
+
+        var monto = parseFloat(montoInput);
+
+        // verificar saldo suficiente
+        if (monto > saldo) {
+          errorEl.textContent =
+            "Saldo insuficiente. Tu saldo es $" + saldo.toFixed(2);
+          errorEl.style.display = "block";
+          return;
+        }
+
+        // actualizar saldo y guardar en localStorage
+        saldo = saldo - monto;
+        localStorage.setItem("saldo", saldo.toFixed(2));
+        document.querySelector(".saldo").textContent = "$" + saldo.toFixed(2);
+
+        // guardar movimiento
+        let movimientos = JSON.parse(localStorage.getItem("movimientos")) || [];
+        movimientos.push({
+          fecha: new Date().toLocaleDateString(),
+          tipo: "Pago de " + servicioSeleccionado,
+          monto: monto,
+        });
+        localStorage.setItem("movimientos", JSON.stringify(movimientos));
+
+        generarComprobante("Pago de " + servicioSeleccionado, monto);
+
+        // mostrar pantalla de exito dentro del modal
+        document.getElementById("pantallaMontoServicio").innerHTML =
+          "<div class='text-center text-white py-4'>" +
+          "<i class='fas fa-check-circle fa-4x mb-3' style='color:#69f0ae'></i>" +
+          "<h4>¡Pago Exitoso!</h4>" +
+          "<p>Pagaste $" +
+          monto.toFixed(2) +
+          " de " +
+          servicioSeleccionado +
+          "</p>" +
+          "<p>Saldo restante: <strong style='color:#ffcc00'>$" +
+          saldo.toFixed(2) +
+          "</strong></p>" +
+          "<button class='btn btn-servicio mt-3' data-dismiss='modal'>Cerrar</button>" +
+          "</div>";
       }
     </script>
   </body>
