@@ -21,19 +21,19 @@
     <!-- validatejs para validaciones -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/validate.js/0.13.1/validate.min.js"></script>
     <!-- estilos propios -->
-    <link rel="stylesheet" href="/css/dashboard.css" />
+    <link rel="stylesheet" href="css/dashboard.css" />
   </head>
   <body>
     <!-- barra de navegacion con nombre, cuenta y botones -->
     <nav class="navbar navbar-expand-lg navbar-dark barra">
       <a class="navbar-brand" href="#">Pokémon Bank</a>
       <div class="ml-auto d-flex align-items-center">
-        <span class="text-white mr-3">Ash Ketchum</span>
-        <span class="text-white mr-3">Cuenta: 0987654321</span>
+        <span class="text-white mr-3" id="nombreNav">Ash Ketchum</span>
+        <span class="text-white mr-3" id="cuentaNav">Cuenta: 0987654321</span>
         <a href="historial.html" class="btn boton-login text-white mr-2"
           >Mis Movimientos</a
         >
-        <a href="index.html" class="btn boton-login text-white"
+        <a href="#" class="btn boton-login text-white" onclick="cerrarSesion()"
           >Cerrar Sesión</a
         >
       </div>
@@ -63,7 +63,6 @@
                 <div class="pokebola-centro"></div>
                 <div class="pokebola-bottom"></div>
               </div>
-              <!-- texto curvo con SVG -->
               <svg
                 class="texto-curvo"
                 width="200"
@@ -318,15 +317,25 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js"></script>
 
     <script>
-      // saldo inicial, se sobreescribe con localStorage si existe
-      var saldo = 500.0;
-      var saldoGuardado = localStorage.getItem("saldo");
-      if (saldoGuardado) {
-        saldo = parseFloat(saldoGuardado);
-        document.addEventListener("DOMContentLoaded", function () {
-          document.querySelector(".saldo").textContent = "$" + saldo.toFixed(2);
-        });
+      // verificar sesion al inicio - debe ser lo primero
+      if (!localStorage.getItem("usuarioLogueado")) {
+        window.location.href = "index.html";
       }
+
+      // leer el usuario activo segun quien inicio sesion
+      var claveUsuario = localStorage.getItem("usuarioActivo") || "usuario";
+      var usuario = JSON.parse(localStorage.getItem(claveUsuario));
+      var saldo = usuario ? usuario.saldo : 500.0;
+
+      // mostrar nombre, cuenta y saldo al cargar
+      document.addEventListener("DOMContentLoaded", function () {
+        document.querySelector(".saldo").textContent = "$" + saldo.toFixed(2);
+        if (usuario) {
+          document.getElementById("nombreNav").textContent = usuario.nombre;
+          document.getElementById("cuentaNav").textContent =
+            "Cuenta: " + usuario.cuenta;
+        }
+      });
 
       // reglas de validacion con validatejs
       var reglasTransaccion = {
@@ -391,9 +400,11 @@
         // datos de la transaccion
         doc.setTextColor(0, 0, 0);
         doc.setFontSize(12);
-        doc.text("Titular: Ash Ketchum", 20, 50);
-        doc.text("Cuenta: 0987654321", 20, 60);
-        doc.text("Fecha: " + new Date().toLocaleDateString(), 20, 70);
+        var nombrePDF = usuario ? usuario.nombre : "Ash Ketchum";
+        var cuentaPDF = usuario ? usuario.cuenta : "0987654321";
+        doc.text("Titular: " + nombrePDF, 20, 50);
+        doc.text("Cuenta: " + cuentaPDF, 20, 60);
+        doc.text("Fecha y hora: " + new Date().toLocaleString(), 20, 70);
         doc.text("Tipo: " + tipo, 20, 80);
         doc.text("Monto: $" + monto.toFixed(2), 20, 90);
         doc.text("Saldo actual: $" + saldo.toFixed(2), 20, 100);
@@ -432,21 +443,17 @@
         }).then(function (result) {
           if (result.isConfirmed) {
             var monto = parseFloat(result.value);
-            // actualizar saldo y guardar en localStorage
+            // actualizar saldo y guardar en localStorage del usuario activo
             saldo = saldo + monto;
-            localStorage.setItem("saldo", saldo.toFixed(2));
-            document.querySelector(".saldo").textContent =
-              "$" + saldo.toFixed(2);
-            // guardar movimiento
-            let movimientos =
-              JSON.parse(localStorage.getItem("movimientos")) || [];
-            movimientos.push({
-              fecha: new Date().toLocaleDateString(),
+            usuario.saldo = saldo;
+            usuario.movimientos.push({
+              fecha: new Date().toLocaleString(),
               tipo: "Depósito",
               monto: monto,
             });
-            localStorage.setItem("movimientos", JSON.stringify(movimientos));
-            generarComprobante("Depósito", monto);
+            localStorage.setItem(claveUsuario, JSON.stringify(usuario));
+            document.querySelector(".saldo").textContent =
+              "$" + saldo.toFixed(2);
             Swal.fire({
               title: "¡Depósito Exitoso!",
               text:
@@ -457,6 +464,11 @@
               icon: "success",
               confirmButtonText: "Cerrar",
               confirmButtonColor: "#cc0000",
+              showDenyButton: true,
+              denyButtonText: "Descargar PDF",
+              denyButtonColor: "#3085d6",
+            }).then(function (res) {
+              if (res.isDenied) generarComprobante("Depósito", monto);
             });
           }
         });
@@ -497,21 +509,17 @@
                 confirmButtonColor: "#cc0000",
               });
             } else {
-              // actualizar saldo y guardar en localStorage
+              // actualizar saldo y guardar en localStorage del usuario activo
               saldo = saldo - monto;
-              localStorage.setItem("saldo", saldo.toFixed(2));
-              document.querySelector(".saldo").textContent =
-                "$" + saldo.toFixed(2);
-              // guardar movimiento
-              let movimientos =
-                JSON.parse(localStorage.getItem("movimientos")) || [];
-              movimientos.push({
-                fecha: new Date().toLocaleDateString(),
+              usuario.saldo = saldo;
+              usuario.movimientos.push({
+                fecha: new Date().toLocaleString(),
                 tipo: "Retiro",
                 monto: monto,
               });
-              localStorage.setItem("movimientos", JSON.stringify(movimientos));
-              generarComprobante("Retiro", monto);
+              localStorage.setItem(claveUsuario, JSON.stringify(usuario));
+              document.querySelector(".saldo").textContent =
+                "$" + saldo.toFixed(2);
               Swal.fire({
                 title: "¡Retiro Exitoso!",
                 text:
@@ -522,6 +530,11 @@
                 icon: "success",
                 confirmButtonText: "Cerrar",
                 confirmButtonColor: "#cc0000",
+                showDenyButton: true,
+                denyButtonText: "Descargar PDF",
+                denyButtonColor: "#3085d6",
+              }).then(function (res) {
+                if (res.isDenied) generarComprobante("Retiro", monto);
               });
             }
           }
@@ -530,14 +543,20 @@
 
       // muestra el saldo actual del usuario
       function consultarSaldo() {
+        var nombre = usuario ? usuario.nombre : "Ash Ketchum";
+        var cuenta = usuario ? usuario.cuenta : "0987654321";
         Swal.fire({
           title: "Consultar Saldo",
           imageUrl: "img/magikarp-shiny.png",
           imageWidth: 100,
           imageHeight: 100,
           html:
-            "<p>Titular: <strong>Ash Ketchum</strong></p>" +
-            "<p>Cuenta: <strong>0987654321</strong></p>" +
+            "<p>Titular: <strong>" +
+            nombre +
+            "</strong></p>" +
+            "<p>Cuenta: <strong>" +
+            cuenta +
+            "</strong></p>" +
             "<hr>" +
             "<h4>Saldo disponible: <span style='color:#cc0000;font-weight:bold;'>$" +
             saldo.toFixed(2) +
@@ -604,21 +623,16 @@
           return;
         }
 
-        // actualizar saldo y guardar en localStorage
+        // actualizar saldo y guardar en localStorage del usuario activo
         saldo = saldo - monto;
-        localStorage.setItem("saldo", saldo.toFixed(2));
-        document.querySelector(".saldo").textContent = "$" + saldo.toFixed(2);
-
-        // guardar movimiento
-        let movimientos = JSON.parse(localStorage.getItem("movimientos")) || [];
-        movimientos.push({
-          fecha: new Date().toLocaleDateString(),
+        usuario.saldo = saldo;
+        usuario.movimientos.push({
+          fecha: new Date().toLocaleString(),
           tipo: "Pago de " + servicioSeleccionado,
           monto: monto,
         });
-        localStorage.setItem("movimientos", JSON.stringify(movimientos));
-
-        generarComprobante("Pago de " + servicioSeleccionado, monto);
+        localStorage.setItem(claveUsuario, JSON.stringify(usuario));
+        document.querySelector(".saldo").textContent = "$" + saldo.toFixed(2);
 
         // mostrar pantalla de exito dentro del modal
         document.getElementById("pantallaMontoServicio").innerHTML =
@@ -633,8 +647,20 @@
           "<p>Saldo restante: <strong style='color:#ffcc00'>$" +
           saldo.toFixed(2) +
           "</strong></p>" +
-          "<button class='btn btn-servicio mt-3' data-dismiss='modal'>Cerrar</button>" +
+          "<button class='btn btn-servicio mt-2' onclick='generarComprobante(\"Pago de " +
+          servicioSeleccionado +
+          '", ' +
+          monto +
+          ")'>Descargar PDF</button>" +
+          "<br><button class='btn btn-servicio mt-2' data-dismiss='modal'>Cerrar</button>" +
           "</div>";
+      }
+
+      // limpia la sesion y redirige al login
+      function cerrarSesion() {
+        localStorage.removeItem("usuarioLogueado");
+        localStorage.removeItem("usuarioActivo");
+        window.location.href = "index.html";
       }
     </script>
   </body>
